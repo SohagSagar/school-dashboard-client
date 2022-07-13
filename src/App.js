@@ -1,6 +1,7 @@
 import './App.css';
 import SidebarMenu from './Components/SidebarMenu';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
@@ -29,7 +30,7 @@ function App() {
           </Route>
 
         </Routes>
-
+        <Toaster />
     </div>
   );
 }

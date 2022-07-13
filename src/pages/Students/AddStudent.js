@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useQuery } from 'react-query';
 
-const AddStudent = ({setAddModalStatus}) => {
+const AddStudent = ({ setAddModalStatus,refetch }) => {
     const [score, setScore] = useState();
     const [result, setResult] = useState('');
     const [grade, setGrade] = useState('');
@@ -23,18 +25,36 @@ const AddStudent = ({setAddModalStatus}) => {
         }
     }, [score])
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register,reset, handleSubmit, watch, formState: { errors } } = useForm();
 
     const onSubmit = data => {
-
 
         const addStudentData = {
             ...data,
             result,
             grade
         }
-        setAddModalStatus(false)    
-        console.log(addStudentData);
+
+        //send data to database
+        fetch('http://localhost:5000/student', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(addStudentData)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data?.insertedId) {
+                    toast.success('Student Added Successfully!');
+                    setAddModalStatus(false);
+                    refetch();
+                    reset();
+                }
+                else {
+                    toast.error('Fail to add.Try Again')
+                }
+            });
     }
     return (
         <div>
@@ -151,7 +171,7 @@ const AddStudent = ({setAddModalStatus}) => {
                         <label class="label">
                             <span class="label-text">Grade</span>
                         </label>
-                        <p class={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p><hr className='mt-5'/>
+                        <p class={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p><hr className='mt-5' />
 
 
 
