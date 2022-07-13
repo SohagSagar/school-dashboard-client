@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BsPencil } from 'react-icons/bs';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import '../../Styles/Student.css'
@@ -7,6 +7,7 @@ import AddStudent from './AddStudent';
 
 
 const Students = () => {
+    const [addModalStatus,setAddModalStatus]=useState(true)
     return (
 
         <div className='w-full px-2 pt-8'>
@@ -14,7 +15,7 @@ const Students = () => {
                 <h1 className='font-bold text-xl '>Students</h1>
                 <div>
                     <input type="text" placeholder="Search" class="lg:input lg:input-bordered sm:input-sm " />
-                    <label for="add-student-modal" class="btn modal-button text-white ml-3 w-28 btn-primary"><AiOutlinePlus className='mr-1 text-white'/>Add</label>
+                    <label onClick={()=>setAddModalStatus(true)} for="add-student-modal" class="btn modal-button text-white ml-3 w-28 btn-primary"><AiOutlinePlus className='mr-1 text-white'/>Add</label>
                 </div>
             </div>
 
@@ -54,7 +55,7 @@ const Students = () => {
                 </table>
             </div>
             {
-                <AddStudent/>
+              addModalStatus &&  <AddStudent setAddModalStatus={setAddModalStatus}/>
             }
         </div>
 

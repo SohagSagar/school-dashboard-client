@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const AddStudent = () => {
+const AddStudent = ({setAddModalStatus}) => {
+    const [score, setScore] = useState();
+    const [result, setResult] = useState('');
+    const [grade, setGrade] = useState('');
+
+    useEffect(() => {
+        if (score >= 0 && score < 31) {
+            setResult('Failed');
+            setGrade('Poor');
+        } else if (score >= 31 && score < 76) {
+            setResult('Passed');
+            setGrade('Average');
+        } else if (score >= 76 && score < 101) {
+            setResult('Passed');
+            setGrade('Excellent');
+        }
+        else {
+            setResult(' ');
+            setGrade(' ');
+        }
+    }, [score])
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+
+    const onSubmit = data => {
+
+
+        const addStudentData = {
+            ...data,
+            result,
+            grade
+        }
+        setAddModalStatus(false)    
+        console.log(addStudentData);
+    }
     return (
         <div>
             <input type="checkbox" id="add-student-modal" class="modal-toggle" />
@@ -19,37 +50,114 @@ const AddStudent = () => {
                         <label class="label">
                             <span class="label-text">Student Name<sup >*</sup></span>
                         </label>
-                        <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        <input {...register('name', {
+                            required: {
+                                value: true,
+                                message: "Field is required"
+                            },
+                            minLength: {
+                                value: 5,
+                                message: "Minimum length should be 5."
+                            }
+                        })} type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+
+                        {
+                            errors?.name &&
+                            <label class="label">
+                                {
+                                    errors?.name.type === 'required' | errors?.name.type === 'minLength' &&
+                                    <span class="label-text-alt text-red-500">{errors?.name?.message}</span>
+                                }
+
+                            </label>
+                        }
+
+
+
 
                         {/* student class */}
                         <label class="label">
                             <span class="label-text">Class<sup >*</sup></span>
                         </label>
-                        <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        <input {...register('class', {
+                            required: {
+                                value: true,
+                                message: "Field is required"
+                            },
+                            min: {
+                                value: 1,
+                                message: "Please input values between 1 & 12"
+                            },
+                            max: {
+                                value: 12,
+                                message: "Please input values between 1 & 12"
+                            }
+
+                        })} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+
+                        {
+                            errors?.class &&
+                            <label class="label">
+                                {
+                                    errors?.class.type === 'required' | errors?.class.type === 'min' | errors?.class.type === 'max' &&
+                                    <span class="label-text-alt text-red-500">{errors?.class?.message}</span>
+                                }
+
+                            </label>
+                        }
+
 
                         {/* scores */}
                         <label class="label">
                             <span class="label-text">Score<sup >*</sup></span>
                         </label>
-                        <input type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+
+                        <input  {...register('score', {
+                            required: {
+                                value: true,
+                                message: "Field is required"
+                            },
+                            min: {
+                                value: 0,
+                                message: "Please input values between 0 & 100"
+                            },
+                            max: {
+                                value: 100,
+                                message: "Please input values between 0 & 100"
+                            }
+                        })} onChange={e => setScore(parseInt(e?.target?.value))} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+
+                        {
+                            errors?.score &&
+                            <label class="label">
+                                {
+                                    errors?.score.type === 'required' | errors?.score.type === 'min' | errors?.score.type === 'max' &&
+                                    <span class="label-text-alt text-red-500">{errors?.score?.message}</span>
+                                }
+
+                            </label>
+                        }
 
                         {/* result   */}
                         <label class="label">
                             <span class="label-text">Result</span>
                         </label>
-                        <input type="text" placeholder="Type here" class="input  input-sm w-full max-w-lg" />
+
+                        <p placeholder='-' class={result === 'Passed' ? "badge badge-lg badge-success text-white font-semibold" : "hidden" | result === 'Failed' ? "badge badge-lg badge-error text-white font-semibold" : "hidden"}>{result}</p>
+
 
 
                         {/* grade   */}
                         <label class="label">
                             <span class="label-text">Grade</span>
                         </label>
-                        <input type="text" placeholder="Type here" class="input  input-sm w-full max-w-lg" />
+                        <p class={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p><hr className='mt-5'/>
 
-                        <input type="submit" value="submit" />
 
-                        <div class="modal-action">
-                            <label type="submit" for="add-student-modal" class="btn">Yay!</label>
+
+                        <div class="modal-action flex justify-start">
+                            <button type='submit' class="btn btn-primary text-white font-semibold btn-sm">Confirm</button>
+                            <label for="add-student-modal" class="btn btn-outline btn-error text-white font-semibold btn-sm">Close</label>
                         </div>
                     </form>
 
