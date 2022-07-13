@@ -8,8 +8,6 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { NavLink, Outlet,Link } from "react-router-dom";
 import '../Styles/SidebarMenu.css'
 
-
-
 const routes = [
     {
         path: "/",

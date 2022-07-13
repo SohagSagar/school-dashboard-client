@@ -5,7 +5,6 @@ import '../../Styles/Student.css'
 import { AiOutlinePlus } from 'react-icons/ai';
 import AddStudent from './AddStudent';
 
-
 const Students = () => {
     const [addModalStatus,setAddModalStatus]=useState(true)
     return (
