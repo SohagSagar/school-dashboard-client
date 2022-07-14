@@ -1,50 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import useScore from '../../Hooks/useScore';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useQuery } from 'react-query';
-import useScore from '../../Hooks/useScore';
 
-const AddStudent = ({ setAddModalStatus,refetch }) => {
-    const [score, setScore] = useState();
+const UpdateStudent = ({updateData,refetch,setUpdateModalStatus}) => {
+    const {_id,name,class:classes,score:updatedScore}=updateData;
+    console.log(name,updatedScore);
+    const [score, setScore] = useState(updatedScore);
     const [result,grade]=useScore(score)
 
     const { register,reset, handleSubmit, watch, formState: { errors } } = useForm();
 
     const onSubmit = data => {
 
-        const addStudentData = {
+        const UpdateStudentData = {
             ...data,
             result,
             grade
         }
+        console.log(UpdateStudentData);
 
-        //send data to database
-        fetch('http://localhost:5000/student', {
-            method: 'POST',
+        //update data to database
+        fetch(`http://localhost:5000/student/${_id}`, {
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json',
             },
-            body: JSON.stringify(addStudentData)
+            body: JSON.stringify(UpdateStudentData)
         })
             .then(res => res.json())
             .then(data => {
-                if (data?.insertedId) {
-                    toast.success('Student Added Successfully!');
-                    setAddModalStatus(false);
+                console.log(data);
+                if (data?.modifiedCount) {
+                    toast.success('Student Update Successfully!');
+                    setUpdateModalStatus(false);
                     refetch();
                     reset();
                 }
                 else {
-                    toast.error('Fail to add.Try Again')
+                    toast.error('Fail to Update.Try Again')
                 }
             });
     }
+    
     return (
         <div>
-            <input type="checkbox" id="add-student-modal" class="modal-toggle" />
+            <input type="checkbox" id="update-student-modal" class="modal-toggle" />
             <div class="modal modal-middle sm:modal-middle">
                 <div class="modal-box">
-                    <label for="add-student-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                    <label for="update-student-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                     <h3 class="font-bold text-lg mb-3">Add Student</h3><hr />
 
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -62,7 +66,7 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
                                 value: 5,
                                 message: "Minimum length should be 5."
                             }
-                        })} type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        })} type="text" defaultValue={name} placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
 
                         {
                             errors?.name &&
@@ -96,7 +100,7 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
                                 message: "Please input values between 1 & 12"
                             }
 
-                        })} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        })} type="number" defaultValue={classes} placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
 
                         {
                             errors?.class &&
@@ -128,7 +132,7 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
                                 value: 100,
                                 message: "Please input values between 0 & 100"
                             }
-                        })} onChange={e => setScore(parseInt(e?.target?.value))} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        })} onChange={e => setScore(parseInt(e?.target?.value))} defaultValue={updatedScore} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
 
                         {
                             errors?.score &&
@@ -160,7 +164,7 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
 
                         <div class="modal-action flex justify-start">
                             <button type='submit' class="btn btn-primary text-white font-semibold btn-sm">Confirm</button>
-                            <label for="add-student-modal" class="btn btn-outline btn-error text-white font-semibold btn-sm">Close</label>
+                            <label for="update-student-modal" class="btn btn-outline btn-error text-white font-semibold btn-sm">Close</label>
                         </div>
                     </form>
 
@@ -171,4 +175,4 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
     );
 };
 
-export default AddStudent;
+export default UpdateStudent;
