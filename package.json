@@ -12,6 +12,7 @@
     "react-hook-form": "^7.33.1",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.4.0",
+    "react-loader-spinner": "^5.1.5",
     "react-pro-sidebar": "^0.7.1",
     "react-query": "^3.39.1",
     "react-router-dom": "^6.3.0",

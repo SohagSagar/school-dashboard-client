@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useScore = (score)=>{
-    
+    console.log('score',score);
     const [result, setResult] = useState('');
     const [grade, setGrade] = useState('');
 

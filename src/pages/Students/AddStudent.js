@@ -19,7 +19,7 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
         }
 
         //send data to database
-        fetch('http://localhost:5000/student', {
+        fetch('https://peaceful-lowlands-64960.herokuapp.com/student', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -41,17 +41,17 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
     }
     return (
         <div>
-            <input type="checkbox" id="add-student-modal" class="modal-toggle" />
-            <div class="modal modal-middle sm:modal-middle">
-                <div class="modal-box">
-                    <label for="add-student-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-                    <h3 class="font-bold text-lg mb-3">Add Student</h3><hr />
+            <input type="checkbox" id="add-student-modal" className="modal-toggle" />
+            <div className="modal modal-middle sm:modal-middle">
+                <div className="modal-box">
+                    <label for="add-student-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                    <h3 className="font-bold text-lg mb-3">Add Student</h3><hr />
 
                     <form onSubmit={handleSubmit(onSubmit)}>
 
                         {/* student name  */}
-                        <label class="label">
-                            <span class="label-text">Student Name<sup >*</sup></span>
+                        <label className="label">
+                            <span className="label-text">Student Name<sup >*</sup></span>
                         </label>
                         <input {...register('name', {
                             required: {
@@ -62,14 +62,14 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
                                 value: 5,
                                 message: "Minimum length should be 5."
                             }
-                        })} type="text" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        })} type="text" placeholder="Type here" className="input input-bordered input-sm w-full max-w-lg" />
 
                         {
                             errors?.name &&
-                            <label class="label">
+                            <label className="label">
                                 {
                                     errors?.name.type === 'required' | errors?.name.type === 'minLength' &&
-                                    <span class="label-text-alt text-red-500">{errors?.name?.message}</span>
+                                    <span className="label-text-alt text-red-500">{errors?.name?.message}</span>
                                 }
 
                             </label>
@@ -79,8 +79,8 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
 
 
                         {/* student class */}
-                        <label class="label">
-                            <span class="label-text">Class<sup >*</sup></span>
+                        <label className="label">
+                            <span className="label-text">Class<sup >*</sup></span>
                         </label>
                         <input {...register('class', {
                             required: {
@@ -96,14 +96,14 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
                                 message: "Please input values between 1 & 12"
                             }
 
-                        })} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        })} type="number" placeholder="Type here" className="input input-bordered input-sm w-full max-w-lg" />
 
                         {
                             errors?.class &&
-                            <label class="label">
+                            <label className="label">
                                 {
                                     errors?.class.type === 'required' | errors?.class.type === 'min' | errors?.class.type === 'max' &&
-                                    <span class="label-text-alt text-red-500">{errors?.class?.message}</span>
+                                    <span className="label-text-alt text-red-500">{errors?.class?.message}</span>
                                 }
 
                             </label>
@@ -111,8 +111,8 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
 
 
                         {/* scores */}
-                        <label class="label">
-                            <span class="label-text">Score<sup >*</sup></span>
+                        <label className="label">
+                            <span className="label-text">Score<sup >*</sup></span>
                         </label>
 
                         <input  {...register('score', {
@@ -128,39 +128,39 @@ const AddStudent = ({ setAddModalStatus,refetch }) => {
                                 value: 100,
                                 message: "Please input values between 0 & 100"
                             }
-                        })} onChange={e => setScore(parseInt(e?.target?.value))} type="number" placeholder="Type here" class="input input-bordered input-sm w-full max-w-lg" />
+                        })} onChange={e => setScore(parseInt(e?.target?.value))} type="number" placeholder="Type here" className="input input-bordered input-sm w-full max-w-lg" />
 
                         {
                             errors?.score &&
-                            <label class="label">
+                            <label className="label">
                                 {
-                                    errors?.score.type === 'required' | errors?.score.type === 'min' | errors?.score.type === 'max' &&
-                                    <span class="label-text-alt text-red-500">{errors?.score?.message}</span>
+                                    errors?.score?.type === 'required' | errors?.score?.type === 'min' | errors?.score.type === 'max'  &&
+                                    <span className="label-text-alt text-red-500">{errors?.score?.message}</span>
                                 }
 
                             </label>
                         }
 
                         {/* result   */}
-                        <label class="label">
-                            <span class="label-text">Result</span>
+                        <label className="label">
+                            <span className="label-text">Result</span>
                         </label>
 
-                        <p placeholder='-' class={result === 'Passed' ? "badge badge-lg badge-success text-white font-semibold" : "hidden" | result === 'Failed' ? "badge badge-lg badge-error text-white font-semibold" : "hidden"}>{result}</p>
+                        <p placeholder='-' className={result === 'Passed' ? "badge badge-lg badge-success text-white font-semibold" : "hidden" | result === 'Failed' ? "badge badge-lg badge-error text-white font-semibold" : "hidden"}>{result}</p>
 
 
 
                         {/* grade   */}
-                        <label class="label">
-                            <span class="label-text">Grade</span>
+                        <label className="label">
+                            <span className="label-text">Grade</span>
                         </label>
-                        <p class={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p><hr className='mt-5' />
+                        <p className={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p><hr className='mt-5' />
 
 
 
-                        <div class="modal-action flex justify-start">
-                            <button type='submit' class="btn btn-primary text-white font-semibold btn-sm">Confirm</button>
-                            <label for="add-student-modal" class="btn btn-outline btn-error text-white font-semibold btn-sm">Close</label>
+                        <div className="modal-action flex justify-start">
+                            <button  type='submit' className="btn btn-primary text-white font-semibold btn-sm">Confirm</button>
+                            <label for="add-student-modal" className="btn btn-outline btn-error text-white font-semibold btn-sm">Close</label>
                         </div>
                     </form>
 

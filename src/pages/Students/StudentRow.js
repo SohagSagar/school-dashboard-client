@@ -3,26 +3,31 @@ import toast from 'react-hot-toast';
 import { BsPencil } from 'react-icons/bs';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import swal from 'sweetalert';
+import Loading from '../../SharedComponents/Loading';
 import UpdateStudent from './UpdateStudent';
 
 const StudentRow = ({ student, refetch, index }) => {
-    const [updateData,setUpdateData]=useState({});
-    const [updateModalStatus,setUpdateModalStatus]=useState(true);
+    console.log('index',index);
+    const [updateData, setUpdateData] = useState({});
+    const [updateModalStatus, setUpdateModalStatus] = useState(true);
     const { _id, name, class: classes, score, result, grade } = student;
-    useEffect(()=>{
 
-    },[])
+
 
     //update student informations
     const studentUpdate = (_id) => {
 
-        fetch(`http://localhost:5000/student/${_id}`)
-        .then(res=>res.json())
-        .then(data=>setUpdateData(data))
-        updateModalStatus(true);
+        fetch(`https://peaceful-lowlands-64960.herokuapp.com/student/${_id}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => setUpdateData(data))
+            setUpdateModalStatus(true);
     }
 
-    console.log(updateData);
 
     //deleting student
     const studentDelete = (_id) => {
@@ -37,7 +42,7 @@ const StudentRow = ({ student, refetch, index }) => {
             .then((willDelete) => {
                 if (willDelete) {
 
-                    fetch(`http://localhost:5000/student/${_id}`, {
+                    fetch(`https://peaceful-lowlands-64960.herokuapp.com/student/${_id}`, {
                         method: 'DELETE',
                         headers: {
                             'content-type': 'application/json'
@@ -64,11 +69,11 @@ const StudentRow = ({ student, refetch, index }) => {
             <td>{name}</td>
             <td>{classes}th</td>
             <td>{
-                <p placeholder='-' class={result === 'Passed' ? "badge badge-md badge-success text-white font-semibold" : "hidden" | result === 'Failed' ? "badge badge-md badge-error text-white font-semibold" : "hidden"}>{result}</p>
+                <p placeholder='-' className={result === 'Passed' ? "badge badge-md badge-success text-white font-semibold" : "hidden" | result === 'Failed' ? "badge badge-md badge-error text-white font-semibold" : "hidden"}>{result}</p>
             }</td>
             <td>{score}/100</td>
             <td>{
-                <p class={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p>
+                <p className={grade === 'Poor' ? " text-red-500 font-semibold ml-1" : "hidden" | grade === 'Average' ? "text-primary font-semibold ml-1" : "hidden" | grade === 'Excellent' ? "text-green-500 font-semibold ml-1" : "hidden"}>{grade}</p>
             }</td>
             <td className='flex items-center justify-start mt-2'><>
                 <label for="update-student-modal"><BsPencil onClick={() => studentUpdate(_id)} className='cursor-pointer text-green-500 ' /></label>
@@ -77,7 +82,7 @@ const StudentRow = ({ student, refetch, index }) => {
 
 
             {
-              updateModalStatus &&  < UpdateStudent setUpdateModalStatus={setUpdateModalStatus} refetch={refetch} updateData={updateData}></UpdateStudent >
+                updateModalStatus && < UpdateStudent setUpdateModalStatus={setUpdateModalStatus} refetch={refetch} updateData={updateData}></UpdateStudent >
             }
 
         </tr >
